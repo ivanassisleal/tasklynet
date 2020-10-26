@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Grid,
@@ -25,6 +25,7 @@ import { useParams } from "react-router-dom";
 
 import api from "../../services/api";
 import history from "../../services/history";
+import useStyles from "./styles";
 
 const initialState = {
   snackBar: {
@@ -47,6 +48,8 @@ const schema = Yup.object({
 });
 
 const ProjectForm = () => {
+  const classes = useStyles();
+
   const [state, setState] = useState(initialState);
 
   let { id } = useParams();
@@ -111,125 +114,107 @@ const ProjectForm = () => {
     <>
       <Grid container>
         <Grid item xs={12}>
-          <Box p={4} pt={6} mt={2}>
-            <Grid item xs={12}>
-              <Box mb={5}>
-                <Breadcrumbs aria-label="breadcrumb">
-                  <Link color="inherit" href="/">
-                    Home
-                  </Link>
-                  <Link color="inherit" href="/getting-started/installation/">
-                    Projects
-                  </Link>
-                  <Typography color="textPrimary">New Project</Typography>
-                </Breadcrumbs>
-                <Typography variant="h5" gutterBottom>
-                  New Project
-                </Typography>
-              </Box>
-            </Grid>
-            <Paper>
-              <Box p={4}>
-                <form onSubmit={formik.handleSubmit}>
-                  <Grid>
-                    <Grid item md={6}>
-                      <TextField
-                        name="title"
-                        label="Title"
-                        variant="outlined"
-                        fullWidth
-                        error={!!formik.touched.title && !!formik.errors.title}
-                        helperText={formik.errors.title}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.title}
-                      />
-                    </Grid>
-                    <Grid item md={8}>
-                      <TextField
-                        name="description"
-                        label="Description"
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        error={
-                          !!formik.touched.description &&
-                          !!formik.errors.description
-                        }
-                        helperText={formik.errors.description}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.description}
-                      />
-                    </Grid>
-                    <Grid container md={12}>
-                      <Grid item md={3}>
-                        <FormControl
-                          variant="outlined"
-                          margin="normal"
-                          fullWidth
-                        >
-                          <InputLabel id="type">Type</InputLabel>
-                          <Select
-                            labelId="type"
-                            id="type"
-                            name="type"
-                            label="Type"
-                            value={formik.values.type}
-                            onChange={formik.handleChange}
-                          >
-                            <MenuItem value="">
-                              <em>None</em>
-                            </MenuItem>
-                            <MenuItem value="Web">Web</MenuItem>
-                            <MenuItem value="Desktop">Desktop</MenuItem>
-                            <MenuItem value="Mobile">Mobile</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={formik.values.active}
-                          value={formik.values.active}
-                          onChange={formik.handleChange}
-                          name="active"
-                          color="primary"
-                        />
-                      }
-                      label="Active"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Box mt={8} mb={2} display="flex">
-                      <Box mr={1}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          type="submit"
-                        >
-                          Save
-                        </Button>
-                      </Box>
-                      <Box>
-                        <Button
-                          variant="contained"
-                          onClick={() => handleClickCancel()}
-                        >
-                          Cancel
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Grid>
-                </form>
-              </Box>
-            </Paper>
-          </Box>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link color="inherit" href="/">
+              Home
+            </Link>
+            <Typography color="textPrimary">Projects</Typography>
+          </Breadcrumbs>
+          <Typography variant="h5" gutterBottom>
+            List of Projects
+          </Typography>
         </Grid>
       </Grid>
+      <Paper className={classes.container}>
+        <Box p={4}>
+          <form onSubmit={formik.handleSubmit}>
+            <Grid>
+              <Grid item md={6}>
+                <TextField
+                  name="title"
+                  label="Title"
+                  variant="outlined"
+                  fullWidth
+                  error={!!formik.touched.title && !!formik.errors.title}
+                  helperText={formik.errors.title}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.title}
+                />
+              </Grid>
+              <Grid item md={8}>
+                <TextField
+                  name="description"
+                  label="Description"
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  error={
+                    !!formik.touched.description && !!formik.errors.description
+                  }
+                  helperText={formik.errors.description}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.description}
+                />
+              </Grid>
+              <Grid container>
+                <Grid item md={3}>
+                  <FormControl variant="outlined" margin="normal" fullWidth>
+                    <InputLabel id="type">Type</InputLabel>
+                    <Select
+                      labelId="type"
+                      id="type"
+                      name="type"
+                      label="Type"
+                      value={formik.values.type}
+                      onChange={formik.handleChange}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value="Web">Web</MenuItem>
+                      <MenuItem value="Desktop">Desktop</MenuItem>
+                      <MenuItem value="Mobile">Mobile</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formik.values.active}
+                    value={formik.values.active}
+                    onChange={formik.handleChange}
+                    name="active"
+                    color="primary"
+                  />
+                }
+                label="Active"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Box mt={8} mb={2} display="flex">
+                <Box mr={1}>
+                  <Button variant="contained" color="primary" type="submit">
+                    Save
+                  </Button>
+                </Box>
+                <Box>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleClickCancel()}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+          </form>
+        </Box>
+      </Paper>
       <Snackbar
         open={state.snackBar.open}
         autoHideDuration={3000}

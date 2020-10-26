@@ -7,7 +7,6 @@ using NetDevUtility.Domain;
 using TasklyNetShared.Data;
 using TasklyNetShared.Models;
 using TasklyNetWebApi.Dto;
-using TasklyNetWebApi.Extensios;
 
 namespace TasklyNetWebApi.Controllers
 {
@@ -23,7 +22,8 @@ namespace TasklyNetWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var projects = await _context.Projects.AsNoTracking().ToListAsync();
+            var projects = await _context.Projects.AsNoTracking()
+                .Select(m=>new { m.Id,m.Title}).ToListAsync();
 
             return Ok(projects);
         }
@@ -50,28 +50,7 @@ namespace TasklyNetWebApi.Controllers
                    EF.Functions.Like(m.Description, $"%{parameters.GlobalFilter}%"));
             }
 
-            // Custom Filters
-            //foreach (var filter in parameterDto.Filters)
-            //{
-            //    var field = filter.Key.ToLower();
-            //    var value = filter.Value;
-
-            //    if (field == "title")
-            //        query = query.Where(m => m.Title == value);
-            //}
-
-            // Recourd Count
-            var recordCount = await query.CountAsync();
-
-            // Paginate
-            var tasks = await query.Paginate(parameters.Page, parameters.Take).ToListAsync();
-
-            return Ok(new PaginateDto
-            {
-                Total = recordCount,
-                Page = parameters.Page,
-                Records = tasks.ToList()
-            });
+            return Ok(await query.ToListAsync());
         }
 
         [HttpGet("{id}")]
@@ -89,12 +68,10 @@ namespace TasklyNetWebApi.Controllers
             project.UserId = (Guid)AuthenticateUserId;
 
             var notification = NduModel<Project>.Validate(project);
-
             if (!notification.Success())
                 return BadRequest(notification.GetNotifications());
 
             _context.Entry(project).State = project.Id == Guid.Empty ? EntityState.Added : EntityState.Modified;
-
             await _context.SaveChangesAsync();
 
             return Ok(project);

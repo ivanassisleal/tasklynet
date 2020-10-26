@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Grid,
@@ -19,22 +19,22 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import api from "../../services/api";
+import * as sessionService from "../../services/sessionService";
 import useStyles from "./styles";
 import Copyright from "../../components/Copyright";
-import { useAuth } from "../../hooks/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
-const initialForm = {
+const initialFormState = {
   email: "",
   password: "",
   remember: true,
 };
 
-const initialState = {
+const initialComponentState = {
   snackBarOpen: false,
 };
 
-const schema = Yup.object({
+const formikValidationSchema = Yup.object({
   password: Yup.string()
     .min(6, "Must be 6 characters or less")
     .required("Required"),
@@ -45,21 +45,19 @@ const SignInForm = () => {
   const classes = useStyles();
 
   //states
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(initialComponentState);
 
   // hooks
-  const authContext = useAuth();
+  const authContext = useContext(AuthContext);
 
   const formik = useFormik({
-    initialValues: initialForm,
-    validationSchema: schema,
+    initialValues: initialFormState,
+    validationSchema: formikValidationSchema,
     validateOnChange: false,
     onSubmit: async (values) => {
       try {
-        const response = await api.post("sessions/signin", values);
-
-        const { token } = response.data;
-
+        const response = await sessionService.signIn(values);
+        const { token } = response;
         authContext.signIn(token);
       } catch (error) {
         if (error.response) {
@@ -72,12 +70,12 @@ const SignInForm = () => {
   });
 
   // functions
-  const handleClose = useCallback((event, reason) => {
+  const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setState({ ...state, snackBarOpen: false });
-  }, []);
+  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -153,7 +151,6 @@ const SignInForm = () => {
 
 const SignIn = () => {
   const classes = useStyles();
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

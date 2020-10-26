@@ -10,6 +10,7 @@ using TasklyNetWebApi.Extensios;
 
 namespace TasklyNetWebApi.Controllers
 {
+
     public class TasksController : BaseController
     {
         DataContext _context;
@@ -42,16 +43,6 @@ namespace TasklyNetWebApi.Controllers
                    EF.Functions.Like(m.Description, $"%{parameters.GlobalFilter}%"));
             }
 
-            // Custom Filters
-            //foreach (var filter in parameterDto.Filters)
-            //{
-            //    var field = filter.Key.ToLower();
-            //    var value = filter.Value;
-
-            //    if (field == "title")
-            //        query = query.Where(m => m.Title == value);
-            //}
-
             // Recourd Count
             var recordCount = await query.CountAsync();
 
@@ -82,12 +73,10 @@ namespace TasklyNetWebApi.Controllers
             task.UserId = (Guid)AuthenticateUserId;
 
             var notification =  NduModel<TasklyNetShared.Models.Task>.Validate(task);
-
             if (!notification.Success())
                 return BadRequest(notification.GetNotifications());
 
             _context.Entry(task).State = task.Id == Guid.Empty ? EntityState.Added : EntityState.Modified;
-
             await _context.SaveChangesAsync();
 
             return Ok(task);

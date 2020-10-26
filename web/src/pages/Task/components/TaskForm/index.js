@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 
 import {
   Button,
@@ -22,7 +22,8 @@ import {
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useTask } from "../../../../hooks/TaskContext";
+
+import { TaskContext } from "../../context/TaskContext";
 
 import api from "../../../../services/api";
 
@@ -46,7 +47,7 @@ const schema = Yup.object({
 const TaskForm = () => {
   const [state, setState] = useState(initalState);
 
-  const taskContext = useTask();
+  const taskContext = useContext(TaskContext);
 
   const formik = useFormik({
     initialValues: initialForm,

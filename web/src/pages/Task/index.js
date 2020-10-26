@@ -1,9 +1,9 @@
 import React from "react";
 
+import { TaskProvider } from "./context/TaskContext";
+
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
-
-import { TaskProvider } from "../../hooks/TaskContext";
 
 const Task = () => {
   return (

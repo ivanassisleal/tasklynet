@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  makeStyles,
   Button,
   Grid,
   Typography,
@@ -16,7 +15,6 @@ import {
   DialogContentText,
   DialogActions,
   TextField,
-  TablePagination,
 } from "@material-ui/core";
 
 import { Edit, Delete, Check, Close } from "@material-ui/icons";
@@ -25,43 +23,36 @@ import history from "../../services/history";
 import api from "../../services/api";
 import { DataTable } from "../../components/DataTable";
 
-const useStyles = makeStyles({
-  table: {
-    width: "100%",
-  },
-});
+import useStyles from "./styles";
+
+import TableColumnCheckBox from "../../components/DataTable/components/DataListTypes/TypeTable/components/ColumnCheckBox";
 
 const initalState = {
   dialogRemoveOpen: false,
   selectedRecord: {},
 };
 
-const initialTableState = {
-  rows: [],
-  rowsPerPage: 10,
-  rowsCount: 0,
-  page: 0,
-  globalFilter: "",
-};
-
 const ProjectList = () => {
+  const classes = useStyles();
+
+  // component state
   const [state, setState] = useState(initalState);
-  const [stateTable, setStateTable] = useState(initialTableState);
+
+  // table component states
+  const [tableData, setTableData] = useState([]);
+  const [tableGlobalFilter, setTableGlobalFilter] = useState("");
+  const [tableSelectedRows, setTableSelectedRows] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await api.post(`projects`, {
-        page: stateTable.page,
-        take: stateTable.rowsPerPage,
-        globalFilter: stateTable.globalFilter,
+        globalFilter: tableGlobalFilter,
       });
 
-      const { records, total } = result.data;
-
-      setStateTable({ ...stateTable, rows: records, rowsCount: total });
+      setTableData(result.data);
     };
     fetchData();
-  }, [stateTable.globalFilter, stateTable.rowsPerPage, stateTable.page]);
+  }, [tableGlobalFilter]);
 
   const handleClickNew = () => {
     history.push("projects/new");
@@ -78,16 +69,11 @@ const ProjectList = () => {
   const handleClickRemoveConfirm = async () => {
     await api.delete(`projects/${state.selectedRecord.id}`);
 
-    const newData = stateTable.row.filter(function (item) {
+    const newData = tableData.filter(function (item) {
       return item !== state.selectedRecord;
     });
 
-    setStateTable({
-      ...stateTable,
-      records: newData,
-      rowsCount: newData.length,
-    });
-
+    setTableData(newData);
     setState({ ...state, dialogRemoveOpen: false });
   };
 
@@ -96,29 +82,21 @@ const ProjectList = () => {
   };
 
   const handleChangeFilter = (event) => {
-    setStateTable({
-      ...stateTable,
-      globalFilter: event.target.value,
-    });
-  };
-
-  const handleClickChangePage = (event, page) => {
-    setStateTable({
-      ...stateTable,
-      page,
-    });
-  };
-
-  const handleClickChangeRowsPerPage = (event) => {
-    setStateTable({
-      ...stateTable,
-      rowsPerPage: parseInt(event.target.value),
-      page: 0,
-    });
+    setTableGlobalFilter(event.target.value);
   };
 
   const columns = useMemo(
     () => [
+      {
+        id: "selection",
+        disableSortBy: true,
+        Header: ({ getToggleAllRowsSelectedProps }) => (
+          <TableColumnCheckBox selectProps={getToggleAllRowsSelectedProps()} />
+        ),
+        Cell: ({ row }) => (
+          <TableColumnCheckBox selectProps={row.getToggleRowSelectedProps()} />
+        ),
+      },
       {
         Header: "Title",
         accessor: "title",
@@ -170,17 +148,30 @@ const ProjectList = () => {
           </Typography>
         </Grid>
       </Grid>
-      <Paper style={{ width: "100%" }}>
+      <Paper className={classes.container}>
         <Grid container>
           <Grid item md={6}>
-            <Box m={3}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleClickNew}
-              >
-                New Task
-              </Button>
+            <Box display="flex" m={3}>
+              <Box>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClickNew}
+                >
+                  New Project
+                </Button>
+              </Box>
+              {tableSelectedRows.length > 0 && (
+                <Box ml={1}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleClickNew}
+                  >
+                    Remover
+                  </Button>
+                </Box>
+              )}
             </Box>
           </Grid>
           <Grid item md={6}>
@@ -188,23 +179,17 @@ const ProjectList = () => {
               <TextField
                 variant="outlined"
                 label="Filter"
-                value={stateTable.globalFilter}
+                value={tableGlobalFilter}
                 onChange={handleChangeFilter}
               />
             </Box>
           </Grid>
         </Grid>
 
-        <DataTable columns={columns} data={stateTable.rows} />
-
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={stateTable.rowsCount}
-          rowsPerPage={stateTable.rowsPerPage}
-          page={stateTable.page}
-          onChangePage={handleClickChangePage}
-          onChangeRowsPerPage={handleClickChangeRowsPerPage}
+        <DataTable
+          columns={columns}
+          data={tableData}
+          setSelectedRows={setTableSelectedRows}
         />
       </Paper>
 

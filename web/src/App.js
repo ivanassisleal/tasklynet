@@ -1,10 +1,11 @@
 import React from "react";
 import { Router } from "react-router-dom";
 
-import { ApplicationProvider } from "./hooks/ApplicationContext";
+import { ApplicationProvider } from "./contexts/ApplicationContext";
+import { AuthProvider } from "./contexts/AuthContext";
+
 import history from "./services/history";
 import Routes from "./routes";
-import { AuthProvider } from "./hooks/AuthContext";
 
 function App() {
   return (

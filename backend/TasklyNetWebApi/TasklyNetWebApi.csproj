@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Reference Include="NetDevUtility">
-      <HintPath>..\..\..\NetDevUtility\NetDevUtility\bin\Release\netcoreapp3.1\NetDevUtility.dll</HintPath>
+      <HintPath>..\..\..\..\private\NetDevUtility\NetDevUtility\bin\Release\netcoreapp3.1\NetDevUtility.dll</HintPath>
     </Reference>
   </ItemGroup>
 

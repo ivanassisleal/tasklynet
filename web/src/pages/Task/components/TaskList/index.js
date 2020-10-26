@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 import {
   Button,
   Grid,
@@ -15,14 +15,15 @@ import {
   DialogContentText,
   DialogActions,
   TextField,
-  TablePagination,
 } from "@material-ui/core";
 
 import { Edit, Delete, Close, Check } from "@material-ui/icons";
 
 import api from "../../../../services/api";
-import { useTask } from "../../../../hooks/TaskContext";
+import { TaskContext } from "../../context/TaskContext";
 import { DataTable } from "../../../../components/DataTable";
+
+import useStyles from "./styles";
 
 const initialState = {
   dialogRemoveOpen: false,
@@ -38,10 +39,12 @@ const initialTableState = {
 };
 
 const TaskList = () => {
+  const classes = useStyles();
+
   const [state, setState] = useState(initialState);
   const [stateTable, setStateTable] = useState(initialTableState);
 
-  const taskContext = useTask();
+  const taskContext = useContext(TaskContext);
 
   const columns = useMemo(
     () => [
@@ -170,7 +173,7 @@ const TaskList = () => {
           </Typography>
         </Grid>
       </Grid>
-      <Paper style={{ width: "100%" }}>
+      <Paper className={classes.container}>
         <Grid container>
           <Grid item md={6}>
             <Box m={3}>
@@ -197,6 +200,7 @@ const TaskList = () => {
 
         <DataTable columns={columns} data={stateTable.rows} />
 
+        {/*   Server Side Pagination    
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -205,7 +209,7 @@ const TaskList = () => {
           page={stateTable.page}
           onChangePage={handleClickChangePage}
           onChangeRowsPerPage={handleClickChangeRowsPerPage}
-        />
+        /> */}
       </Paper>
       <Dialog
         open={state.dialogRemoveOpen}

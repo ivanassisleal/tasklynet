@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
@@ -10,14 +10,14 @@ import IconButton from "@material-ui/core/IconButton";
 import MainItems from "./components/MainItems";
 import SecondaryItems from "./components/SecondaryItems";
 
-import { useApplication } from "../../../../hooks/ApplicationContext";
+import { ApplicationContext } from "../../../../contexts/ApplicationContext";
 
 import useStyles from "./styles";
 
 const SideBar = () => {
   const classes = useStyles();
 
-  const applicationContext = useApplication();
+  const applicationContext = useContext(ApplicationContext);
 
   return (
     <Drawer

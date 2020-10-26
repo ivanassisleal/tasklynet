@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import {
   ListSubheader,
@@ -9,10 +9,10 @@ import {
 
 import { AccountBoxOutlined, ExitToAppOutlined } from "@material-ui/icons";
 
-import { useAuth } from "../../../../../../hooks/AuthContext";
+import { AuthContext } from "../../../../../../contexts/AuthContext";
 
 const SecondaryItems = () => {
-  const authContext = useAuth();
+  const authContext = useContext(AuthContext);
 
   return (
     <>

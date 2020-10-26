@@ -4,28 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TasklyNetShared.Models
 {
-    public class Task
+    public class Category
     {
         public Guid Id { get; set; }
 
         [Required]
         [MaxLength(120)]
-        public string Title { get; set; }
-
-        [MaxLength(400)]
         public string Description { get; set; }
-
-        public bool Done { get; set; }
-
-        public Guid? CategoryId { get; set; }
-
-        [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
-
-        public Guid ProjectId { get; set; }
-
-        [ForeignKey("ProjectId")]
-        public Project Project { get; set; }
 
         public Guid UserId { get; set; }
 

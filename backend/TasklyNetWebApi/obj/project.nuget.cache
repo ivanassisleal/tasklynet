@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DedSM+Hz2Q5CkVoX/x0P6n98fXNigcOnaBnrOMaRnFpuMF9TTZJU2hPd4NMB4JfE8vHM6HBW2SEi/0r3peORoQ==",
+  "dgSpecHash": "p21u3bwuDJJb/Amsk8KpWhQ9Pjk38wgNBtFY4HyuEhqrSJuQu4ph16vUp6mpzLvXyqgykIhP/ysygTKE+3VKFA==",
   "success": true,
-  "projectFilePath": "C:\\github\\private\\TasklyNet\\backend\\TasklyNetWebApi\\TasklyNetWebApi.csproj",
+  "projectFilePath": "C:\\github\\public\\TasklyNet\\backend\\TasklyNetWebApi\\TasklyNetWebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ivan.Leal\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.6\\microsoft.aspnetcore.authentication.jwtbearer.3.1.6.nupkg.sha512",
     "C:\\Users\\Ivan.Leal\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.6\\microsoft.aspnetcore.jsonpatch.3.1.6.nupkg.sha512",

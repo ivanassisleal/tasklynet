@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "18RUJLOb+1keWArvzl9G2dXVVpXXQ2flaSww3/WhgkaGXVr7WyKf0ehMM/0gufpPjWmHx8oQi6eXvVmDoP2Zmw==",
+  "dgSpecHash": "sK7BlXUx7bclbsp33hcPDcDAaBc4XZznganVv3U+M8V31whwOg7sJDcMv/EbD5/iDo1xGYTyZjVxcmbN6HhcKA==",
   "success": true,
-  "projectFilePath": "C:\\github\\private\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj",
+  "projectFilePath": "C:\\github\\public\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ivan.Leal\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Ivan.Leal\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",

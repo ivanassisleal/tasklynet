@@ -5532,11 +5532,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\github\\private\\TasklyNet\\backend\\TasklyNetWebApi\\TasklyNetWebApi.csproj",
+      "projectUniqueName": "C:\\github\\public\\TasklyNet\\backend\\TasklyNetWebApi\\TasklyNetWebApi.csproj",
       "projectName": "TasklyNetWebApi",
-      "projectPath": "C:\\github\\private\\TasklyNet\\backend\\TasklyNetWebApi\\TasklyNetWebApi.csproj",
+      "projectPath": "C:\\github\\public\\TasklyNet\\backend\\TasklyNetWebApi\\TasklyNetWebApi.csproj",
       "packagesPath": "C:\\Users\\Ivan.Leal\\.nuget\\packages\\",
-      "outputPath": "C:\\github\\private\\TasklyNet\\backend\\TasklyNetWebApi\\obj\\",
+      "outputPath": "C:\\github\\public\\TasklyNet\\backend\\TasklyNetWebApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -5557,8 +5557,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\github\\private\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj": {
-              "projectPath": "C:\\github\\private\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj"
+            "C:\\github\\public\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj": {
+              "projectPath": "C:\\github\\public\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj"
             }
           }
         }

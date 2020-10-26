@@ -1,4 +1,4 @@
-import React, { createContext, useState, useCallback, useContext } from "react";
+import React, { createContext, useState, useContext } from "react";
 
 const initialState = {
   formModal: false,
@@ -25,7 +25,7 @@ const TaskProvider = ({ children }) => {
     setState({ ...state, selectedTask: row });
   };
 
-  const setRefreshList = (row) => {
+  const setRefreshList = () => {
     setState({ ...state, refreshList: !state.refreshList });
   };
 
@@ -44,16 +44,4 @@ const TaskProvider = ({ children }) => {
   );
 };
 
-// hook
-const useTask = () => {
-  const context = useContext(TaskContext);
-  if (!context) {
-    throw new Error(
-      "useApplication must be used within an ApplicationProvider"
-    );
-  }
-
-  return context;
-};
-
-export { TaskProvider, useTask };
+export { TaskProvider, TaskContext };

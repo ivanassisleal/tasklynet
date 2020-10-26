@@ -1,8 +1,8 @@
 import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    paddingLeft: theme.spacing(1),
+const useStyles = makeStyles(() => ({
+  table: {
+    width: "100%",
   },
   container: {
     marginTop: "25px",

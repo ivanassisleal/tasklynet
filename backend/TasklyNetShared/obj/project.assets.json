@@ -5164,11 +5164,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\github\\private\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj",
+      "projectUniqueName": "C:\\github\\public\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj",
       "projectName": "TasklyNetShared",
-      "projectPath": "C:\\github\\private\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj",
+      "projectPath": "C:\\github\\public\\TasklyNet\\backend\\TasklyNetShared\\TasklyNetShared.csproj",
       "packagesPath": "C:\\Users\\Ivan.Leal\\.nuget\\packages\\",
-      "outputPath": "C:\\github\\private\\TasklyNet\\backend\\TasklyNetShared\\obj\\",
+      "outputPath": "C:\\github\\public\\TasklyNet\\backend\\TasklyNetShared\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",

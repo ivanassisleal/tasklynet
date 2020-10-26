@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { Route, Redirect } from "react-router-dom";
 
 import LayoutPrivate from "../layouts/Private";
 import LayoutPublic from "../layouts/Public";
 
-import { useAuth } from "../hooks/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function RouteWrapper({
   component: Component,
   isPrivate = false,
   ...rest
 }) {
-  const authContext = useAuth();
+  const authContext = useContext(AuthContext);
 
   const { authenticate } = authContext.state;
 

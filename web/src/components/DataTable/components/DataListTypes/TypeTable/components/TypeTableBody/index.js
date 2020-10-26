@@ -52,26 +52,13 @@ const TableBodyLoading = ({ loading, rows }) => {
   );
 };
 
-const TypeTableBody = ({
-  getTableBodyProps,
-  includePagination,
-  page,
-  rows,
-  prepareRow,
-  loading,
-}) => {
+const TypeTableBody = ({ getTableBodyProps, page, prepareRow }) => {
   return (
     <TableBody {...getTableBodyProps()}>
-      {includePagination
-        ? page.map((row) => {
-            prepareRow(row);
-            return <TableBodyRow row={row} key={row.index} />;
-          })
-        : rows.map((row) => {
-            prepareRow(row);
-            return <TableBodyRow row={row} key={row.index} />;
-          })}
-      {/* <TableBodyLoading loading={loading} rows={rows} /> */}
+      {page.map((row) => {
+        prepareRow(row);
+        return <TableBodyRow row={row} key={row.index} />;
+      })}
     </TableBody>
   );
 };
