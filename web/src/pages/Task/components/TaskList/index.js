@@ -93,19 +93,19 @@ const TaskList = () => {
       });
 
       const { records, total } = result.data;
-
       setStateTable({ ...stateTable, rows: records, rowsCount: total });
     };
     fetchData();
-  }, [taskContext.state.refreshList]);
+  }, [taskContext.changeList]);
 
   const handleClickNew = () => {
-    taskContext.setSelectedRecord(null);
-    taskContext.openModalForm();
+    taskContext.setSelectedTask(null);
+    taskContext.setIsOpenModal(true);
   };
 
   const handleClickEdit = (row) => {
-    taskContext.setSelectedRecord(row);
+    taskContext.setSelectedTask(row);
+    taskContext.setIsOpenModal(true);
   };
 
   const handleClickRemove = (row) => {
@@ -127,27 +127,11 @@ const TaskList = () => {
 
     setState({ ...state, dialogRemoveOpen: false });
 
-    taskContext.setRefreshList();
+    taskContext.setListHasChange();
   };
 
   const handleClickRemoveCancel = () => {
     setState({ ...state, dialogRemoveOpen: false, selectedRecord: {} });
-  };
-
-  const handleClickChangePage = (event, page) => {
-    setStateTable({
-      ...stateTable,
-      page,
-    });
-  };
-
-  const handleClickChangeRowsPerPage = (event) => {
-    setStateTable({
-      ...stateTable,
-      rowsPerPage: parseInt(event.target.value),
-      page: 0,
-    });
-    taskContext.setRefreshList();
   };
 
   const handleChangeFilter = (event) => {
@@ -155,7 +139,7 @@ const TaskList = () => {
       ...stateTable,
       globalFilter: event.target.value,
     });
-    taskContext.setRefreshList();
+    taskContext.setListHasChange();
   };
 
   return (
@@ -199,17 +183,6 @@ const TaskList = () => {
         </Grid>
 
         <DataTable columns={columns} data={stateTable.rows} />
-
-        {/*   Server Side Pagination    
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={stateTable.rowsCount}
-          rowsPerPage={stateTable.rowsPerPage}
-          page={stateTable.page}
-          onChangePage={handleClickChangePage}
-          onChangeRowsPerPage={handleClickChangeRowsPerPage}
-        /> */}
       </Paper>
       <Dialog
         open={state.dialogRemoveOpen}

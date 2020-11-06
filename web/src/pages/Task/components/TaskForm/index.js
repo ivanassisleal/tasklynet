@@ -20,16 +20,11 @@ import {
   Checkbox,
 } from "@material-ui/core";
 
-import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useFormik } from "formik";
 
 import { TaskContext } from "../../context/TaskContext";
-
 import api from "../../../../services/api";
-
-const initalState = {
-  projects: [],
-};
 
 const initialForm = {
   title: "",
@@ -45,7 +40,7 @@ const schema = Yup.object({
 });
 
 const TaskForm = () => {
-  const [state, setState] = useState(initalState);
+  const [projects, setProjects] = useState([]);
 
   const taskContext = useContext(TaskContext);
 
@@ -56,8 +51,8 @@ const TaskForm = () => {
     onSubmit: async (values) => {
       try {
         await api.post("tasks/store", values);
-        taskContext.setRefreshList();
-        taskContext.closeModalForm();
+        taskContext.setChangeList();
+        taskContext.setIsOpenModal(false);
       } catch (error) {
         if (error.response) {
           if (error.response.status === 400) {
@@ -70,34 +65,27 @@ const TaskForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await api.get("projects");
+      setProjects(response.data);
 
-      setState({ ...state, projects: response.data });
-    };
-    if (taskContext?.state.formModal) fetchData();
-  }, [taskContext?.state.formModal]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { selectedTask } = taskContext?.state;
-      if (selectedTask) {
-        const response = await api.get(`tasks/${selectedTask.id}`);
+      if (taskContext?.selectedTask) {
+        const response = await api.get(`tasks/${taskContext?.selectedTask.id}`);
         formik.setValues(response.data);
-        taskContext.openModalForm();
+        taskContext.setIsOpenModal(true);
       } else {
         formik.resetForm();
       }
     };
-    fetchData();
-  }, [taskContext.state.selectedTask]);
+    if (taskContext?.isOpenModal) fetchData();
+  }, [taskContext?.isOpenModal]);
 
   const handleClickClose = useCallback(() => {
-    taskContext.closeModalForm();
+    taskContext.setIsOpenModal(false);
   }, []);
 
   return (
     <>
       <Dialog
-        open={taskContext.state.formModal}
+        open={taskContext.isOpenModal}
         onClose={handleClickClose}
         maxWidth="lg"
         aria-labelledby="alert-dialog-title"
@@ -139,7 +127,7 @@ const TaskForm = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   >
-                    {state?.projects.map((project) => (
+                    {projects.map((project) => (
                       <MenuItem key={project.id} value={project.id}>
                         {project.title}
                       </MenuItem>

@@ -16,12 +16,12 @@ const MainItems = () => {
 
   return (
     <>
-      <ListItem button>
+      {/* <ListItem button>
         <ListItemIcon>
           <Dashboard />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
-      </ListItem>
+      </ListItem> */}
       <ListItem button onClick={() => handleClickMenu("projects")}>
         <ListItemIcon>
           <AccountTreeSharp />
@@ -34,12 +34,12 @@ const MainItems = () => {
         </ListItemIcon>
         <ListItemText primary="Tasks" />
       </ListItem>
-      <ListItem button onClick={(e) => handleClickMenu("categories")}>
+      {/* <ListItem button onClick={(e) => handleClickMenu("categories")}>
         <ListItemIcon>
           <LabelOutlined />
         </ListItemIcon>
         <ListItemText primary="Categories" />
-      </ListItem>
+      </ListItem> */}
     </>
   );
 };

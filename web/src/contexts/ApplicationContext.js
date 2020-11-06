@@ -1,7 +1,8 @@
-import React, { createContext, useState, useCallback, useContext } from "react";
+import React, { createContext, useState, useCallback } from "react";
 
 const initialState = {
   drawerOpen: true,
+  title: "",
 };
 
 // Context
