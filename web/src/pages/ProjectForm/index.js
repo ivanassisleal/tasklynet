@@ -27,30 +27,18 @@ import api from "../../services/api";
 import history from "../../services/history";
 import useStyles from "./styles";
 
-const initialState = {
-  snackBar: {
-    open: false,
-    type: "error",
-    message: "",
-  },
-};
-
-const initialForm = {
-  title: "",
-  description: "",
-  type: "web",
-  active: true,
-};
-
-const schema = Yup.object({
-  title: Yup.string().required("Required"),
-  description: Yup.string().required("Required"),
-});
-
 const ProjectForm = () => {
-  const classes = useStyles();
+  const initialState = {
+    snackBar: {
+      open: false,
+      type: "error",
+      message: "",
+    },
+  };
 
   const [state, setState] = useState(initialState);
+
+  const classes = useStyles();
 
   let { id } = useParams();
 
@@ -63,8 +51,16 @@ const ProjectForm = () => {
   }, []);
 
   const formik = useFormik({
-    initialValues: initialForm,
-    validationSchema: schema,
+    initialValues: {
+      title: "",
+      description: "",
+      type: "web",
+      active: true,
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required("Required"),
+      description: Yup.string().required("Required"),
+    }),
     validateOnChange: false,
     onSubmit: async (values) => {
       try {
