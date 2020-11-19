@@ -149,7 +149,6 @@ C:\github\public\TasklyNet\backend\TasklyNetWebApi\obj\Debug\netcoreapp3.1\Taskl
 C:\github\public\TasklyNet\backend\TasklyNetWebApi\obj\Debug\netcoreapp3.1\TasklyNetWebApi.pdb
 C:\github\public\TasklyNet\backend\TasklyNetWebApi\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\github\public\TasklyNet\backend\TasklyNetWebApi\bin\Debug\netcoreapp3.1\appsettings.json
-C:\github\public\TasklyNet\backend\TasklyNetWebApi\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\github\public\TasklyNet\backend\TasklyNetWebApi\bin\Debug\netcoreapp3.1\TasklyNetWebApi.exe
 C:\github\public\TasklyNet\backend\TasklyNetWebApi\bin\Debug\netcoreapp3.1\TasklyNetWebApi.deps.json
 C:\github\public\TasklyNet\backend\TasklyNetWebApi\bin\Debug\netcoreapp3.1\TasklyNetWebApi.runtimeconfig.json
@@ -212,3 +211,4 @@ C:\github\public\TasklyNet\backend\TasklyNetWebApi\obj\Debug\netcoreapp3.1\Taskl
 C:\github\public\TasklyNet\backend\TasklyNetWebApi\obj\Debug\netcoreapp3.1\staticwebassets\TasklyNetWebApi.StaticWebAssets.Manifest.cache
 C:\github\public\TasklyNet\backend\TasklyNetWebApi\obj\Debug\netcoreapp3.1\staticwebassets\TasklyNetWebApi.StaticWebAssets.xml
 C:\github\public\TasklyNet\backend\TasklyNetWebApi\obj\Debug\netcoreapp3.1\TasklyNetWebApi.genruntimeconfig.cache
+C:\github\public\TasklyNet\backend\TasklyNetWebApi\obj\Debug\netcoreapp3.1\scopedcss\bundle\TasklyNetWebApi.styles.css

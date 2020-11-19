@@ -4,7 +4,7 @@ import { useTable, useSortBy, usePagination, useRowSelect } from "react-table";
 import { TablePagination } from "@material-ui/core";
 import TypeTable from "./components/DataListTypes/TypeTable";
 
-function DataTable({ columns, data, setSelectedRows }) {
+function DataTable({ columns, data, setSelectedRows, paginate = true }) {
   const {
     getTableBodyProps,
     headerGroups,
@@ -46,15 +46,17 @@ function DataTable({ columns, data, setSelectedRows }) {
         rows={rows}
         prepareRow={prepareRow}
       />
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={pageSize}
-        page={pageIndex}
-        onChangePage={(event, page) => gotoPage(page)}
-        onChangeRowsPerPage={(e) => setPageSize(e.target.value)}
-      />
+      {paginate && (
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={pageSize}
+          page={pageIndex}
+          onChangePage={(event, page) => gotoPage(page)}
+          onChangeRowsPerPage={(e) => setPageSize(e.target.value)}
+        />
+      )}
     </>
   );
 }

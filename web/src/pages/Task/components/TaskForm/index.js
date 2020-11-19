@@ -51,8 +51,8 @@ const TaskForm = () => {
     onSubmit: async (values) => {
       try {
         await api.post("tasks/store", values);
-        taskContext.setChangeList();
         taskContext.setIsOpenModal(false);
+        taskContext.setListHasChange();
       } catch (error) {
         if (error.response) {
           if (error.response.status === 400) {

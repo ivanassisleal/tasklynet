@@ -7,6 +7,7 @@ using NetDevUtility.Domain;
 using TasklyNetShared.Data;
 using TasklyNetShared.Models;
 using TasklyNetWebApi.Dto;
+using TasklyNetWebApi.Extensios;
 
 namespace TasklyNetWebApi.Controllers
 {
@@ -50,7 +51,18 @@ namespace TasklyNetWebApi.Controllers
                    EF.Functions.Like(m.Description, $"%{parameters.GlobalFilter}%"));
             }
 
-            return Ok(await query.ToListAsync());
+            var recordCount = await query.CountAsync();
+
+            // Pagination
+            var projects = await query.Paginate(parameters.Page, parameters.Take)
+                .ToListAsync();
+
+            return Ok(new PaginateDto()
+            {
+                Page = parameters.Page,
+                Total = recordCount,
+                Records = projects
+            });
         }
 
         [HttpGet("{id}")]

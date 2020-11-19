@@ -15,6 +15,7 @@ import {
   DialogContentText,
   DialogActions,
   TextField,
+  TablePagination,
 } from "@material-ui/core";
 
 import { Edit, Delete, Close, Check } from "@material-ui/icons";
@@ -24,6 +25,7 @@ import { TaskContext } from "../../context/TaskContext";
 import { DataTable } from "../../../../components/DataTable";
 
 import useStyles from "./styles";
+import DialogRemove from "../../../../components/DialogRemove";
 
 const initialState = {
   dialogRemoveOpen: false,
@@ -42,7 +44,12 @@ const TaskList = () => {
   const classes = useStyles();
 
   const [state, setState] = useState(initialState);
-  const [stateTable, setStateTable] = useState(initialTableState);
+
+  const [tableData, setTableData] = useState([]);
+  const [tableCount, setTableCount] = useState(0);
+  const [tablePage, setTablePage] = useState(0);
+  const [tablePageSize, setTablePageSize] = useState(5);
+  const [tableGlobalFilter, setTableGlobalFilter] = useState("");
 
   const taskContext = useContext(TaskContext);
 
@@ -87,16 +94,18 @@ const TaskList = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await api.post(`tasks`, {
-        page: stateTable.page,
-        take: stateTable.rowsPerPage,
-        globalFilter: stateTable.globalFilter,
+        page: tablePage,
+        globalFilter: tableGlobalFilter,
+        take: tablePageSize,
       });
 
-      const { records, total } = result.data;
-      setStateTable({ ...stateTable, rows: records, rowsCount: total });
+      const { records, total, page } = result.data;
+      setTablePage(page);
+      setTableCount(total);
+      setTableData(records);
     };
     fetchData();
-  }, [taskContext.changeList]);
+  }, [taskContext.changeList, tableGlobalFilter, tablePage, tablePageSize]);
 
   const handleClickNew = () => {
     taskContext.setSelectedTask(null);
@@ -114,19 +123,12 @@ const TaskList = () => {
 
   const handleClickRemoveConfirm = async () => {
     await api.delete(`tasks/${state.selectedRecord.id}`);
-
-    const newData = stateTable.rows.filter(function (item) {
-      return item !== state.selectedRecord;
-    });
-
-    setStateTable({
-      ...stateTable,
-      records: newData,
-      rowsCount: newData.length,
-    });
-
+    setTableData(
+      tableData.rows.filter(function (item) {
+        return item !== state.selectedRecord;
+      })
+    );
     setState({ ...state, dialogRemoveOpen: false });
-
     taskContext.setListHasChange();
   };
 
@@ -135,10 +137,7 @@ const TaskList = () => {
   };
 
   const handleChangeFilter = (event) => {
-    setStateTable({
-      ...stateTable,
-      globalFilter: event.target.value,
-    });
+    setTableGlobalFilter(event.target.value);
     taskContext.setListHasChange();
   };
 
@@ -175,42 +174,31 @@ const TaskList = () => {
               <TextField
                 variant="outlined"
                 label="Filter"
-                value={stateTable.globalFilter}
+                value={tableGlobalFilter}
                 onChange={handleChangeFilter}
               />
             </Box>
           </Grid>
         </Grid>
 
-        <DataTable columns={columns} data={stateTable.rows} />
+        <DataTable columns={columns} data={tableData} paginate={false} />
+
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={tableCount}
+          rowsPerPage={tablePageSize}
+          page={tablePage}
+          onChangePage={(event, page) => setTablePage(page)}
+          onChangeRowsPerPage={(e) => setTablePageSize(e.target.value)}
+        />
       </Paper>
-      <Dialog
-        open={state.dialogRemoveOpen}
-        onClose={handleClickRemoveCancel}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Confirm this action?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to remove the record?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClickRemoveCancel} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleClickRemoveConfirm}
-            color="secondary"
-            autoFocus
-          >
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+      <DialogRemove
+        dialogRemoveOpen={state.dialogRemoveOpen}
+        handleClickRemoveCancel={handleClickRemoveCancel}
+        handleClickRemoveConfirm={handleClickRemoveConfirm}
+      />
     </>
   );
 };

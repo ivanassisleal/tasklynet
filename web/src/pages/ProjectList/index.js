@@ -9,12 +9,8 @@ import {
   IconButton,
   Breadcrumbs,
   Link,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   TextField,
+  TablePagination,
 } from "@material-ui/core";
 
 import { Edit, Delete, Check, Close } from "@material-ui/icons";
@@ -22,37 +18,42 @@ import { Edit, Delete, Check, Close } from "@material-ui/icons";
 import history from "../../services/history";
 import api from "../../services/api";
 import { DataTable } from "../../components/DataTable";
-
 import useStyles from "./styles";
-
 import TableColumnCheckBox from "../../components/DataTable/components/DataListTypes/TypeTable/components/ColumnCheckBox";
-
-const initalState = {
-  dialogRemoveOpen: false,
-  selectedRecord: {},
-};
+import DialogRemove from "../../components/DialogRemove";
 
 const ProjectList = () => {
+  const initalState = {
+    dialogRemoveOpen: false,
+    selectedRecord: {},
+  };
+
   const classes = useStyles();
 
-  // component state
   const [state, setState] = useState(initalState);
 
-  // table component states
   const [tableData, setTableData] = useState([]);
+  const [tableCount, setTableCount] = useState(0);
+  const [tablePage, setTablePage] = useState(0);
+  const [tablePageSize, setTablePageSize] = useState(5);
   const [tableGlobalFilter, setTableGlobalFilter] = useState("");
   const [tableSelectedRows, setTableSelectedRows] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await api.post(`projects`, {
+        page: tablePage,
         globalFilter: tableGlobalFilter,
+        take: tablePageSize,
       });
 
-      setTableData(result.data);
+      const { records, total, page } = result.data;
+      setTablePage(page);
+      setTableCount(total);
+      setTableData(records);
     };
     fetchData();
-  }, [tableGlobalFilter]);
+  }, [tableGlobalFilter, tablePage, tablePageSize]);
 
   const handleClickNew = () => {
     history.push("projects/new");
@@ -68,12 +69,11 @@ const ProjectList = () => {
 
   const handleClickRemoveConfirm = async () => {
     await api.delete(`projects/${state.selectedRecord.id}`);
-
-    const newData = tableData.filter(function (item) {
-      return item !== state.selectedRecord;
-    });
-
-    setTableData(newData);
+    setTableData(
+      tableData.filter(function (item) {
+        return item !== state.selectedRecord;
+      })
+    );
     setState({ ...state, dialogRemoveOpen: false });
   };
 
@@ -190,36 +190,25 @@ const ProjectList = () => {
           columns={columns}
           data={tableData}
           setSelectedRows={setTableSelectedRows}
+          paginate={false}
+        />
+
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={tableCount}
+          rowsPerPage={tablePageSize}
+          page={tablePage}
+          onChangePage={(event, page) => setTablePage(page)}
+          onChangeRowsPerPage={(e) => setTablePageSize(e.target.value)}
         />
       </Paper>
 
-      <Dialog
-        open={state.dialogRemoveOpen}
-        onClose={handleClickRemoveCancel}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Confirm this action?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to remove the record?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClickRemoveCancel} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleClickRemoveConfirm}
-            color="secondary"
-            autoFocus
-          >
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DialogRemove
+        dialogRemoveOpen={state.dialogRemoveOpen}
+        handleClickRemoveCancel={handleClickRemoveCancel}
+        handleClickRemoveConfirm={handleClickRemoveConfirm}
+      />
     </>
   );
 };
